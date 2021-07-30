@@ -32,8 +32,13 @@ class commandManager {
 		if (!this.scriptNameExists(cmd)) {
 			return;
 		}
-		// trying to make it a bit more secure by binding your code to the window...
-		return eval.call(window, this.commands[cmd]);
+		try {
+			// trying to make it a bit more secure by binding your code to the window...
+			return eval.call(window, this.commands[cmd]);
+		} catch (exception) {
+			alert(`There was a problem running your script: ${exception.message} on line number: ${exception.lineNumber}`);
+			return '';
+		}
 	}
 }
 
@@ -120,6 +125,9 @@ class SlashCommand extends React.Component {
 		// remove the found command from the string
 		this.setState({inputVal: textareaValArr.join(' ')});
 
+	}
+	componentDidMount() {
+		this.mainInput.current.focus();
 	}
 	render() {
 		return (
