@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import SlashCommand from "./SlashCommand";
+import './App.css'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+function Popover(props) {
+	return (
+		<div className="popover">
+			<div className="inner">
+				<h3>{props.title}</h3>
+				{props.children}
+			</div>
+		</div>
+	);
 }
 
+class App extends React.Component {
+	state = {
+		popoverIsOpen: false
+	}
+	constructor(props) {
+		super(props);
+	}
+	openPopover = (val) => {
+		this.setState({popoverIsOpen: val || true});
+	}
+	closePopover = () => {
+		this.setState({popoverIsOpen: false});
+	}
+	render () {
+		let popoverMarkup = null;
+		if (this.state.popoverIsOpen) {
+			popoverMarkup = (
+				<Popover title={this.state.popoverIsOpen.title}>
+					{this.state.popoverIsOpen.children}
+				</Popover>
+			);
+		}
+		return (
+			<div>
+				{popoverMarkup}
+				<SlashCommand openPopover={this.openPopover} closePopover={this.closePopover} />
+			</div>
+				);
+	}
+}
 export default App;
